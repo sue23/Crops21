@@ -7,6 +7,7 @@ global Angles Kinetic AvgData
 Oldpath = pwd;
 addpath(Oldpath) %Susanna
 %mi vedi?
+%si, ora!
 Moment_100 = ones(100,3,6).*nan;
 Power_100 = ones(100,3,6).*nan;
 TotPower_100 = ones(100,3,1).*nan;
