@@ -2,6 +2,7 @@
 %diversi per un subj potendo o no distinguere tra destra e sinistra e ti
 %predispone le matrici per il plot degli andamenti cinematici e cinetici della curva media
 % import patient
+% è la volta buona?
 clear all
 global Angles Kinetic AvgData
 Oldpath = pwd;
