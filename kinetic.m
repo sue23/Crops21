@@ -6,7 +6,9 @@ Moments_label={'lhipmoment', 'rhipmoment', 'lkneemoment', 'rkneemoment', 'lankle
 Powers_label={'lhippower','rhippower','lkneepower','rkneepower','lanklepower','ranklepower'};
 Forces_label={'fx1','fx2','fy1','fy2','fz1','fz2'};
 Subject_Name=char(c3d.c3dpar.subjects.names);
+if isfield(c3d.c3dpar,'processing')
 Bodymass=c3d.c3dpar.processing.bodymass;
+end
  j=1;
 events=c3devents(c3d,'abs'); %events are expressed in absolute frame and time
 % matrici con eventi. sulle righe i trial sulle colonne left=1 right=2
@@ -186,6 +188,7 @@ Knee.workN(j,2)=RworkKneeN; Hip.workP(j,2)=RworkHipP; Hip.workN(j,2)=RworkHipN;
 
 
 %% imput platform forces
+if isfield(c3d.c3dpar,'processing')
 forces=c3dget(c3d,Subject_Name,Forces_label);
 
 % Forces extraction
@@ -295,9 +298,10 @@ FY.pushYforce(j,2)=abs(RpushYforce/(Bodymass/.98)*10); %     Right push Fy max
 FY.pushYforce(j,1)=abs(LpushYforce/(Bodymass/.98)*10);%     Left push Fy max
 FY.breakYforce(j,2)=abs(RbreakYforce/(Bodymass/.98)*10);%     Right break Fy max
 FY.breakYforce(j,1)=abs(LbreakYforce/(Bodymass/.98)*10);%     Left break Fy max
-
+output_kinetic.FZ =FZ; output_kinetic.FX = FX; output_kinetic.FY = FY;
+end
  output_kinetic.Hip = Hip; output_kinetic.Knee = Knee; output_kinetic.Ankle = Ankle;
- output_kinetic.FZ =FZ; output_kinetic.FX = FX; output_kinetic.FY = FY;
+ 
 
 end
 

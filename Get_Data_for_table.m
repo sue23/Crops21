@@ -37,8 +37,8 @@ if nside == 2
     AvgData.SwingTime.l(subj) = nanmean(SpatialData.SwingTime(:,1));
     AvgData.SwingTime.r(subj) = nanmean(SpatialData.SwingTime(:,2));
     
-    AvgData.Double_support.Pre(subj) = nanmean(SpatialData.Double_support(:,1));
-    AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
+    AvgData.Double_support(subj) = nanmean(SpatialData.Double_support(:,1));
+%     AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
     
     for joint = fieldnames(Data)'
         for par = fieldnames(Data.(joint{1}))'
@@ -91,8 +91,8 @@ else
         AvgData.StepLength(subj) = nanmean(SpatialData.StepLength(:));
         AvgData.StanceTime(subj) = nanmean(SpatialData.StanceTime(:));
         AvgData.SwingTime(subj) = nanmean(SpatialData.SwingTime(:));
-        AvgData.Double_support.Pre(subj) = nanmean(SpatialData.Double_support(:,1));
-        AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
+        AvgData.Double_support(subj) = nanmean(SpatialData.Double_support(:,1));
+%         AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
     
     else
         %salvo solo un lato
@@ -105,8 +105,8 @@ else
             AvgData.StepLength.l(subj) = nanmean(SpatialData.StepLength(:,1));
             AvgData.StanceTime.l(subj) = nanmean(SpatialData.StanceTime(:,1));
             AvgData.SwingTime.l(subj) = nanmean(SpatialData.SwingTime(:,1));
-            AvgData.Double_support.Pre(subj) = nanmean(SpatialData.Double_support(:,1));
-            AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
+            AvgData.Double_support.l(subj) = nanmean(SpatialData.Double_support);
+%             AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
         else
             AvgData.FootOff_perc.r(subj) = nanmean(SpatialData.FootOff_perc(:,2));
             AvgData.StrideVelocity.r(subj) = nanmean(SpatialData.StrideVelocity(:,2));
@@ -116,8 +116,8 @@ else
             AvgData.StepLength.r(subj) = nanmean(SpatialData.StepLength(:,2));
             AvgData.StanceTime.r(subj) = nanmean(SpatialData.StanceTime(:,2));
             AvgData.SwingTime.r(subj) = nanmean(SpatialData.SwingTime(:,2));
-            AvgData.Double_support.Pre(subj) = nanmean(SpatialData.Double_support(:,1));
-            AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
+            AvgData.Double_support.r(subj) = nanmean(SpatialData.Double_support);
+%             AvgData.Double_support.Terminal(subj) = nanmean(SpatialData.Double_support(:,2));
         end
     end
     

@@ -79,7 +79,7 @@ for subj = 1:nsubj
         SpatialData.StepLength(j,:) = spatial_param(6,:); %[Lsteplenght/1000 Rsteplenght/1000]; %[m]
         SpatialData.StanceTime(j,:) = spatial_param(7,:); %[LStance_time RStance_time]; %[s]
         SpatialData.SwingTime(j,:) = spatial_param(8,:); %[LSwing_time RSwing_time]; %[s]
-        SpatialData.Double_support(j,:) = spatial_param(9,:); %[Ini_Double_support Fin_Double_support]; %[s]
+        SpatialData.Double_support(j,:) = sum(spatial_param(9,:))/2; %[Ini_Double_support Fin_Double_support]; %[s]
         
                 
         % Import Angles head and upper limb
