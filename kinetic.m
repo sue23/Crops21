@@ -190,7 +190,9 @@ Knee.workN(j,2)=RworkKneeN; Hip.workP(j,2)=RworkHipP; Hip.workN(j,2)=RworkHipN;
 %% imput platform forces
 if isfield(c3d.c3dpar,'processing')
 forces=c3dget(c3d,Subject_Name,Forces_label);
-
+if isempty(forces)
+    forces=c3dget(c3d,Subject_Name,{'force.fx1','force.fx2','force.fy1','force.fy2','force.fz1','force.fz2'});
+end
 % Forces extraction
 LlenStridea = left_footstrikea(2)-left_footstrikea(1);
 RlenStridea = right_footstrikea(2)-right_footstrikea(1);
