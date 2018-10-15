@@ -79,7 +79,7 @@ for subj = 1:nsubj
         SpatialData.StepLength(j,:) = spatial_param(6,:); %[Lsteplenght/1000 Rsteplenght/1000]; %[m]
         SpatialData.StanceTime(j,:) = spatial_param(7,:); %[LStance_time RStance_time]; %[s]
         SpatialData.SwingTime(j,:) = spatial_param(8,:); %[LSwing_time RSwing_time]; %[s]
-        SpatialData.Double_support(j,:) = sum(spatial_param(9,:))/2; %[Ini_Double_support Fin_Double_support]; %[s]
+        SpatialData.Double_support(j,:) = spatial_param(9,:); %[Ini_Double_support Fin_Double_support]; %[s]
         
                 
         % Import Angles head and upper limb
@@ -331,8 +331,7 @@ for subj = 1:nsubj
         if isempty(kin);kin='1';end
         if strcmp(kin,'1')
             [  Moment_100,Power_100,TotPower_100, output_kinetic ] = kinetic( c3d);
-            Moments_100(:,:,:,j)=Moment_100.*10e-3;Powers_100(:,:,:,j)=Power_100;TotPowers_100(:,:,j)=TotPower_100;
-            TotPower_100 =[];
+ Moments_100(:,:,:,j)=Moment_100.*1e-3;Powers_100(:,:,:,j)=Power_100;TotPowers_100(:,:,j)=TotPower_100; % Moment metri = mm/1000 % Silvia            TotPower_100 =[];
             for fn = fieldnames(output_kinetic)'
                 for fnn = fieldnames(output_kinetic.(fn{1}))'
                     eval([(fn{1}) '.' (fnn{1}) '(' num2str(j) ',:)= output_kinetic.' (fn{1}) '.' (fnn{1}) ';']);
