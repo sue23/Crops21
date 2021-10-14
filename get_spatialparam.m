@@ -41,12 +41,14 @@ RStance_time=(footoff(2)-footstrike1(2))/Frame_rate;
 LSwing_time=(footstrike2(1)-footoff(1))/Frame_rate;
 RSwing_time=(footstrike2(2)-footoff(2))/Frame_rate;
 
-if footstrike1(1)<footstrike1(2)
-    Ini_Double_support= (min(footoff)-footstrike1(2))/Frame_rate;
-    Fin_Double_support= (max(footoff)-footstrike2(1))/Frame_rate;
-else
-    Ini_Double_support= (min(footoff)-footstrike1(1))/Frame_rate;
-    Fin_Double_support= (max(footoff)-footstrike2(2))/Frame_rate;
+if footstrike1(1)<footstrike1(2) 
+    %ciclo sinistro
+    Ini_Double_support= (footoff(2)-footstrike1(1))/Frame_rate;
+    Fin_Double_support= (footoff(1)-footstrike1(2))/Frame_rate;
+else 
+    %ciclo destro
+    Ini_Double_support= (footoff(1)-footstrike1(2))/Frame_rate;
+    Fin_Double_support= (footoff(2)-footstrike1(1))/Frame_rate;
 end
 
 
