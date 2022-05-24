@@ -295,7 +295,7 @@ for subj = 1:nsubj
             ind25 = ceil((25*(footstrike2(j,2)-footstrike1(j,2)))/100);
             ind6 = ceil((6*(footstrike2(j,2)-footstrike1(j,2)))/100);
             [Knee.FlexMaxStance(j,2), percind] = max((AnglesLL(footstrike1(j,2)+ind6:footstrike1(j,2)+ind6+ind25,1,5)));
-            Knee.FlexMaxStancePerc(j,2) = (percind-ind6)/(footstrike2(j,2)-footstrike1(j,2))*100;
+            Knee.FlexMaxStancePerc(j,2) = percind/(footstrike2(j,2)-footstrike1(j,2))*100;
         end
         
         % Max Flex swing, %
