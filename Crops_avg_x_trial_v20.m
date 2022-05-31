@@ -298,6 +298,8 @@ for subj = 1:nsubj
             Knee.FlexMaxStancePerc(j,2) = (percind-ind6)/(footstrike2(j,2)-footstrike1(j,2))*100;
         end
         
+
+        
         % Max Flex swing, %
         [Knee.FlexMaxSwing(j,1), percind] = max((AnglesLL(footoff(j,1):footstrike2(j,1),1,5)));
         Knee.FlexMaxSwingPerc(j,1) = (percind+footoff(j,1)-footstrike1(j,1))/(footstrike2(j,1)-footstrike1(j,1))*100; % modifica 
@@ -311,6 +313,25 @@ for subj = 1:nsubj
         Knee.ExtMaxStancePerc(j,1) = percind/(footstrike2(j,1)-footstrike1(j,1))*100;
         [Knee.ExtMaxStance(j,2), percind] = min((AnglesLL(footstrike1(j,2):footoff(j,2),1,6)));
         Knee.ExtMaxStancePerc(j,2) = percind/(footstrike2(j,2)-footstrike1(j,2))*100;
+        
+        
+        %         TO DO: fare figura di verifica del picco
+        figure
+        subplot(1,2,1)
+        plot(1:100,Angles_ll_100(:,1,5,j))%plot(1:100,AnglesLL(footstrike1(j,1):footstrike2(j,1),1,5))
+        hold on
+        plot(Knee.FlexMaxStancePerc(j,1),Knee.FlexMaxStance(j,1),'*')
+        plot(Knee.FlexMaxSwingPerc(j,1),Knee.FlexMaxSwing(j,1),'o')
+        plot(Knee.ExtMaxStancePerc(j,1),Knee.ExtMaxStance(j,1),'d')
+        
+        
+        subplot(1,2,2)
+        plot(1:100,Angles_ll_100(:,1,6,j))
+        hold on
+        plot(Knee.FlexMaxStancePerc(j,2),Knee.FlexMaxStance(j,2),'*')
+        plot(Knee.FlexMaxSwingPerc(j,2),Knee.FlexMaxSwing(j,2),'o')
+        plot(Knee.ExtMaxStancePerc(j,2),Knee.ExtMaxStance(j,2),'d')
+        
         
         %% Ankle parameters (first column = left, second column  = right;
         % rows = trials)
@@ -337,6 +358,24 @@ for subj = 1:nsubj
         Ankle.PlantarFlexMaxPerc(j,1) = percind/(footstrike2(j,1)-footstrike1(j,1))*100;
         [Ankle.PlantarFlexMax(j,2), percind] = min((AnglesLL(footstrike1(j,2):footstrike2(j,2),1,8)));
         Ankle.PlantarFlexMaxPerc(j,2) = percind/(footstrike2(j,2)-footstrike1(j,2))*100;
+        
+        
+        %         TO DO: fare figura di verifica del picco
+        figure
+        subplot(1,2,1)
+        plot(1:100,Angles_ll_100(:,1,7,j))%plot(1:100,AnglesLL(footstrike1(j,1):footstrike2(j,1),1,5))
+        hold on
+        plot(Ankle.DorsalFlexMaxStancePerc(j,1),Ankle.DorsalFlexMaxStance(j,1),'*')
+        plot(Ankle.DorsalFlexMaxSwingPerc(j,1),Ankle.DorsalFlexMaxSwing(j,1),'o')
+        plot(Ankle.PlantarFlexMaxPerc(j,1),Ankle.PlantarFlexMax(j,1),'d')
+        
+        
+        subplot(1,2,2)
+        plot(1:100,Angles_ll_100(:,1,8,j))
+        hold on
+        plot(Ankle.DorsalFlexMaxStancePerc(j,2),Ankle.DorsalFlexMaxStance(j,2),'*')
+        plot(Ankle.DorsalFlexMaxSwingPerc(j,2),Ankle.DorsalFlexMaxSwing(j,2),'o')
+        plot(Ankle.PlantarFlexMaxPerc(j,2),Ankle.PlantarFlexMax(j,2),'d')
         
         
         kin = input('Kinetic: yes [1] No [2]? [default: 1]','s');
