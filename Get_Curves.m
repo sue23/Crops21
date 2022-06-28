@@ -1,6 +1,14 @@
-function [  Angles, Kinetic ] = Get_Curves( Angles_ul_100, Angles_ll_100, Powers_100,TotPowers_100, Moments_100, subj, ntrial, nside, answer, side )
+function [  Angles, Kinetic, EMG ] = Get_Curves( Angles_ul_100, Angles_ll_100, Powers_100,TotPowers_100, Moments_100, EMG_norm_env_100, subj, ntrial, nside, answer, side )
 global Angles Kinetic
 
+ %%emg
+        Avg_EMG_norm_env_100 = mean(cat(3,squeeze(EMG_norm_env_100(:,:,1,:)), squeeze(EMG_norm_env_100(:,:,2,:))),3);
+        L_Avg_EMG_norm_env_100 = mean(squeeze(EMG_norm_env_100(:,:,1,:)),3);
+        R_Avg_EMG_norm_env_100 = mean(squeeze(EMG_norm_env_100(:,:,2,:)),3);
+        
+EMG.Avg_EMG_norm_env_100 = Avg_EMG_norm_env_100;
+EMG.L_Avg_EMG_norm_env_100=L_Avg_EMG_norm_env_100;
+EMG.R_Avg_EMG_norm_env_100=R_Avg_EMG_norm_env_100;
 %sinistro e destro separati
 
 if nside == 2
@@ -276,6 +284,8 @@ else
             tmp3 =Moments_100(:,:,2:2:njoint,3);
             tmptmp4(:,:,trial3r,3)=tmp3(:,:,trial3r);
         end
+        
+       
         
         if strcmp(answer,'2')
             Kinetic.Avg_trial_power100(:,:,:,subj) = nanmean(cat(4,tmptmp1, tmptmp2),4); %media sui trial

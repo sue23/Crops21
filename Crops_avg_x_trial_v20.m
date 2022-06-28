@@ -59,8 +59,10 @@ for subj = 1:nsubj
         Frame_rate=c3d.c3dpar.point.rate;
         
 %         matrici con eventi. sulle righe i trial sulle colonne left=1 right=2
-        [ footoff(j,:), footstrike1(j,:), footstrike2(j,:) ] = get_gaitevents( events );
-        
+        [ ~,digital] = get_gaitALLevents( events );
+        footoff(j,:) = digital.footoff;
+        footstrike1(j,:) = digital.footstrike1;
+        footstrike2(j,:) =digital.footstrike2;
         % Import subjectname and measurements
         Subject_Name=char(c3d.c3dpar.subjects.names);
         
@@ -346,13 +348,28 @@ for subj = 1:nsubj
         Ankle.DorsalFlexMaxStancePerc(j,2) = percind/(footstrike2(j,2)-footstrike1(j,2))*100;
         
         % Max DorsalFlex swing, %
-        [Ankle.DorsalFlexMaxSwing(j,1), percind] = max((AnglesLL(footoff(j,1):footstrike2(j,1),1,7)));
-		Ankle.DorsalFlexMaxSwingPerc(j,1) = (percind+footoff(j,1)-footstrike1(j,1))/(footstrike2(j,1)-footstrike1(j,1))*100; %modifica
-        %Ankle.DorsalFlexMaxSwingPerc(j,1) = (percind+footoff(j,1))/(footstrike2(j,1)-footstrike1(j,1))*100;
-        [Ankle.DorsalFlexMaxSwing(j,2), percind] = max((AnglesLL(footoff(j,2):footstrike2(j,2),1,8)));
-		Ankle.DorsalFlexMaxSwingPerc(j,2) = (percind+footoff(j,2)-footstrike1(j,2))/(footstrike2(j,2)-footstrike1(j,2))*100;  %modifica
-        %Ankle.DorsalFlexMaxSwingPerc(j,2) = (percind+footoff(j,2))/(footstrike2(j,2)-footstrike1(j,2))*100;
-        
+%         [Ankle.DorsalFlexMaxSwing(j,1), percind] = max((AnglesLL(footoff(j,1):footstrike2(j,1),1,7)));
+% 		Ankle.DorsalFlexMaxSwingPerc(j,1) = (percind+footoff(j,1)-footstrike1(j,1))/(footstrike2(j,1)-footstrike1(j,1))*100; %modifica
+        [peak_val,locs]=findpeaks((AnglesLL(footoff(j,1):footstrike2(j,1),1,7)));
+        for ii = 1:numel(locs)
+           perc_locs(ii) =  (locs(ii)+footoff(j,1)-footstrike1(j,1))/(footstrike2(j,1)-footstrike1(j,1))*100; 
+        end
+        [~, tmpl] = min(perc_locs-80);
+        Ankle.DorsalFlexMaxSwingPerc(j,1) = perc_locs(tmpl);
+        Ankle.DorsalFlexMaxSwing(j,1) = peak_val(tmpl);
+        perc_locs=[];
+        peak_val = [];
+%         [Ankle.DorsalFlexMaxSwing(j,2), percind] = max((AnglesLL(footoff(j,2):footstrike2(j,2),1,8)));
+% 		Ankle.DorsalFlexMaxSwingPerc(j,2) = (percind+footoff(j,2)-footstrike1(j,2))/(footstrike2(j,2)-footstrike1(j,2))*100;  %modifica
+        [peak_valr,locsr]=findpeaks((AnglesLL(footoff(j,2):footstrike2(j,2),1,8)));
+        for ii = 1:numel(locsr)
+           perc_locsr(ii) =  (locsr(ii)+footoff(j,2)-footstrike1(j,2))/(footstrike2(j,2)-footstrike1(j,2))*100; 
+        end
+        [~, tmpr] = min(perc_locsr-80);
+        Ankle.DorsalFlexMaxSwingPerc(j,2) = perc_locsr(tmpr);
+        Ankle.DorsalFlexMaxSwing(j,2) = peak_valr(tmpr);
+        perc_locsr=[];
+        peak_valr = [];
         % Max PlantarFlex, %
         [Ankle.PlantarFlexMax(j,1), percind] = min((AnglesLL(footstrike1(j,1):footstrike2(j,1),1,7)));
         Ankle.PlantarFlexMaxPerc(j,1) = percind/(footstrike2(j,1)-footstrike1(j,1))*100;
@@ -382,7 +399,7 @@ for subj = 1:nsubj
         if isempty(kin);kin='1';end
         if strcmp(kin,'1')
             [  Moment_100,Power_100,TotPower_100, output_kinetic ] = kinetic( c3d);
- Moments_100(:,:,:,j)=Moment_100.*1e-3;Powers_100(:,:,:,j)=Power_100;TotPowers_100(:,:,j)=TotPower_100; % Moment metri = mm/1000 % Silvia            TotPower_100 =[];
+            Moments_100(:,:,:,j)=Moment_100.*1e-3;Powers_100(:,:,:,j)=Power_100;TotPowers_100(:,:,j)=TotPower_100; % Moment metri = mm/1000 % Silvia            TotPower_100 =[];
             for fn = fieldnames(output_kinetic)'
                 for fnn = fieldnames(output_kinetic.(fn{1}))'
                     eval([(fn{1}) '.' (fnn{1}) '(' num2str(j) ',:)= output_kinetic.' (fn{1}) '.' (fnn{1}) ';']);
@@ -396,7 +413,44 @@ for subj = 1:nsubj
         else
             Moments_100(:,:,:,j)=Moment_100.*nan;Powers_100(:,:,:,j)=Power_100.*nan;TotPowers_100(:,:,j)=TotPower_100.*nan;
         end
-            
+          
+        %% EMG
+         EMG_struct=loadmuscles(c3d);
+         [ analog, ~] = get_gaitALLevents( events );
+        analog_footoff(j,:) = analog.footoff;
+        analog_footstrike1(j,:) = analog.footstrike1;
+        analog_footstrike2(j,:) =analog.footstrike2;
+        
+        nmuscles = size(EMG_struct.env_r,2);
+        nc = length(analog_footstrike1(j,1):analog_footstrike2(j,1));
+        t100 = linspace(1,nc,100);
+
+        
+        for m = 1:nmuscles %left
+            EMG_filt_100(:,m,1,j)= interp1(1:nc,EMG_struct.emgBP_l(analog_footstrike1(j,1):analog_footstrike2(j,1),m),t100,'linear');
+            EMG_env_100(:,m,1,j)= interp1(1:nc,EMG_struct.env_l(analog_footstrike1(j,1):analog_footstrike2(j,1),m),t100,'linear');
+
+        end
+        nc = length(analog_footstrike1(j,2):analog_footstrike2(j,2));
+        t100 = linspace(1,nc,100);
+        for m = 1:nmuscles %right
+            EMG_filt_100(:,m,2,j)= interp1(1:nc,EMG_struct.emgBP_r(analog_footstrike1(j,2):analog_footstrike2(j,2),m),t100,'linear');
+            EMG_env_100(:,m,2,j)= interp1(1:nc,EMG_struct.env_r(analog_footstrike1(j,2):analog_footstrike2(j,2),m),t100,'linear');
+        
+        end
+        
+        %normalizzo sulla media
+        avgenv = mean(EMG_env_100,1);
+        EMG_norm_env_100(:,:,1,j) = EMG_env_100(:,:,1,j)./avgenv(:,:,1);
+        EMG_norm_env_100(:,:,2,j) = EMG_env_100(:,:,2,j)./avgenv(:,:,2);
+        
+%          EMG_filt_r(:,:,j)=EMG_struct.emgBP_r;
+%          EMG_filt_l(:,:,j)=EMG_struct.emgBP_l;
+%          
+%          EMG_env_r(:,:,j)=EMG_struct.env_r;
+%          EMG_env_l(:,:,j)=EMG_struct.env_l;
+         
+        
     end
     if ~isempty(AnglesUL)
     Data.Head = Head; Data.Neck = Neck; Data.Shoulder = Shoulder; Data.Elbow = Elbow; Data.Wrist = Wrist;
@@ -407,14 +461,17 @@ for subj = 1:nsubj
     if exist('FZ')==1;Data.FZ =FZ; Data.FX = FX; Data.FY = FY;end
     
     [ AvgData,] = Get_Data_for_table( Data, SpatialData, AnglesUL_label, AnglesLL_label, Angles_ul_100, Angles_ll_100, subj, ntrial, nside, answer, side );
-     [ Angles, Kinetic ] = Get_Curves( Angles_ul_100, Angles_ll_100, Powers_100, TotPowers_100, Moments_100, subj, ntrial, nside, answer, side );
-    save([Subject_Name, '.mat'],'Angles_ul_100','Angles_ll_100','AnglesUL_label','AnglesLL_label','SpatialData','Powers_100','Moments_100');
+     [ Angles, Kinetic, EMG ] = Get_Curves( Angles_ul_100, Angles_ll_100, Powers_100, TotPowers_100, Moments_100, EMG_norm_env_100, subj, ntrial, nside, answer, side );
+    save([Subject_Name, '.mat'],'Angles_ul_100','Angles_ll_100','AnglesUL_label','AnglesLL_label','SpatialData','Powers_100','Moments_100','EMG_norm_env_100');
      clear Head Neck Shoulder Elbow Wrist Thorax Pelvis Hip Knee Ankle TRJ 
+     
+     
+    
 end
 cd(Oldpath)
 T = NestedStruct2table(AvgData);
 
 Respath = uigetdir([],'Select folder to save: ');
 filename =input('Insert file name to save: ','s');
-save([Respath,'\',filename,'.mat'],'Angles','Kinetic','AvgData','T')
+save([Respath,'\',filename,'.mat'],'Angles','Kinetic','EMG','AvgData','T')
 writetable(T,[Respath,'\',filename,'.xlsx'],'sheet',1)
