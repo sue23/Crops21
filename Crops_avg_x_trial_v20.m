@@ -46,7 +46,7 @@ for subj = 1:nsubj
         if ispc
         [Name,PathName,tmp] = uigetfile('*c3d','Please select c3d file'); % Silvia ho aggiunto il . così mi visualizza .c3d
         else
-        [Name,PathName,tmp] = uigetfile('.*c3d','Please select c3d file'); % Silvia ho aggiunto il . così mi visualizza .c3d            
+        [Name,PathName,tmp] = uigetfile('*c3d','Please select c3d file'); % Silvia ho aggiunto il . così mi visualizza .c3d            
         end
         FileName = [PathName,Name];
         if isempty(FileName)
