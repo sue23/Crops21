@@ -17,8 +17,7 @@ for i=1:size(emg_clean_r,2)
 
 end
     
-prematfilec3d.emgBP_r=emgBP_r;
-prematfilec3d.env_r=env_r;
+
 
 
 
@@ -34,8 +33,11 @@ for i=1:size(emg_clean_l,2)
     end
    
 end
-prematfilec3d.emgBP_l=emgBP_l;
-prematfilec3d.env_l=env_l;
+
+prematfilec3d.emgBP=cat(3,emgBP_r,emgBP_l);
+prematfilec3d.env=cat(3,env_r,env_l);
+
+
 
 
 

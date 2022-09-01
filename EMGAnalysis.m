@@ -23,7 +23,7 @@ Fc= 4; %4;->de Luca
 N = 2; %4; 
 Wn = Fc/(Fs/2);
 [B, A] = butter(N,Wn, 'low'); %filter's parameters
-envelope=filtfilt(B, A, rec_emg); %in the case of Off-line treatment
+envelope=filtfilt(B, A, rec_emg(2:end)); %in the case of Off-line treatment
 %envelope=envelope
 end
 
