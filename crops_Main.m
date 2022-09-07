@@ -65,7 +65,7 @@ for subj = 1:nsubj
     SpatialData.StepLength_R = [];
     SpatialData.Fin_Double_support_R = [];
     
-    jl=1;jr=1;
+   
     for j=1:nc3d
        
         FileName = [c3dPaths{j},filesep,c3dNames{j}];

@@ -48,12 +48,12 @@ for s = 1:nstride
         Angles_ul_100(:,:,3,s)=Angles_ul_100z;
         
         %% Head parameters (first column = left, second column  = right; rows = trials)
-%         % Tilt (x=1)
-%         [Head.Tilt.Mean(s),Head.Tilt.Range(s), Head.Tilt.IC(s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),1,5));
-%         % Obliquity (y=2)
-%         [Head.Obl.Mean(s),Head.Obl.Range(s), Head.Obl.IC(s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),2,5));
-%         % Rotation (z=3)
-%         [Head.Rot.Mean(s),Head.Rot.Range(s), Head.Rot.IC(s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),3,5));
+        %         % Tilt (x=1)
+        %         [Head.Tilt.Mean(s),Head.Tilt.Range(s), Head.Tilt.IC(s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),1,5));
+        %         % Obliquity (y=2)
+        %         [Head.Obl.Mean(s),Head.Obl.Range(s), Head.Obl.IC(s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),2,5));
+        %         % Rotation (z=3)
+        %         [Head.Rot.Mean(s),Head.Rot.Range(s), Head.Rot.IC(s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),3,5));
         
         [Head.Mean(1,s),Head.Range(1,s), Head.IC(1,s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),1,5));
         [Head.Mean(2,s),Head.Range(2,s), Head.IC(2,s)] = get_parval(AnglesUL(footstrike1(s):footstrike2(s),2,5));
@@ -95,7 +95,7 @@ for s = 1:nstride
     nc = length(footstrike1(s):footstrike2(s));
     oldtime =1:nc;
     newtime = linspace(0,nc,100);
-
+    
     Angles_ll_100x= [];
     Angles_ll_100y= [];
     Angles_ll_100z= [];
@@ -180,13 +180,13 @@ for s = 1:nstride
     [Knee.ExtMaxStance(s), percind] = min((AnglesLL(footstrike1(s):footoff(s),1,3)));
     Knee.ExtMaxStancePerc(s) = percind/(footstrike2(s)-footstrike1(s))*100;
     
-%     figure
-%     %             subplot(1,2,1)
-%     plot(1:100,Angles_ll_100(:,3,1,s))%plot(1:100,AnglesLL(footstrike1(s,1):footstrike2(s,1),1,5))
-%     hold on
-%     plot(Knee.FlexMaxStancePerc(s),Knee.FlexMaxStance(s),'*')
-%     plot(Knee.FlexMaxSwingPerc(s),Knee.FlexMaxSwing(s),'o')
-%     plot(Knee.ExtMaxStancePerc(s),Knee.ExtMaxStance(s),'d')
+    %     figure
+    %     %             subplot(1,2,1)
+    %     plot(1:100,Angles_ll_100(:,3,1,s))%plot(1:100,AnglesLL(footstrike1(s,1):footstrike2(s,1),1,5))
+    %     hold on
+    %     plot(Knee.FlexMaxStancePerc(s),Knee.FlexMaxStance(s),'*')
+    %     plot(Knee.FlexMaxSwingPerc(s),Knee.FlexMaxSwing(s),'o')
+    %     plot(Knee.ExtMaxStancePerc(s),Knee.ExtMaxStance(s),'d')
     
     
     %% Ankle parameters (first column = left, second column  = right; rows = trials)
@@ -215,27 +215,27 @@ for s = 1:nstride
     Ankle.PlantarFlexMaxPerc(s) = percind/(footstrike2(s)-footstrike1(s))*100;
     
     
-%     %         TO DO: fare figura di verifica del picco
-%     figure
-%     plot(1:100,Angles_ll_100(:,4,1,s))%plot(1:100,AnglesLL(footstrike1(s,1):footstrike2(s,1),1,5))
-%     hold on
-%     plot(Ankle.DorsalFlexMaxStancePerc(s),Ankle.DorsalFlexMaxStance(s),'*')
-%     plot(Ankle.DorsalFlexMaxSwingPerc(s),Ankle.DorsalFlexMaxSwing(s),'o')
-%     plot(Ankle.PlantarFlexMaxPerc(s),Ankle.PlantarFlexMax(s),'d')
-%     
+    %     %         TO DO: fare figura di verifica del picco
+    %     figure
+    %     plot(1:100,Angles_ll_100(:,4,1,s))%plot(1:100,AnglesLL(footstrike1(s,1):footstrike2(s,1),1,5))
+    %     hold on
+    %     plot(Ankle.DorsalFlexMaxStancePerc(s),Ankle.DorsalFlexMaxStance(s),'*')
+    %     plot(Ankle.DorsalFlexMaxSwingPerc(s),Ankle.DorsalFlexMaxSwing(s),'o')
+    %     plot(Ankle.PlantarFlexMaxPerc(s),Ankle.PlantarFlexMax(s),'d')
+    %
     
     %% imput platform forces
-%     
-%     %%cerco ciclo sulla pedana di forza
-%     figure
-%     plot(forces(:,:,end))
-%     hold on
-%     plot(forces(:,:,end-1))
+    %
+    %     %%cerco ciclo sulla pedana di forza
+    %     figure
+    %     plot(forces(:,:,end))
+    %     hold on
+    %     plot(forces(:,:,end-1))
     
     % Moments(VALUES,Plane(sagittal, frontal, rotation),SERIES(l-rpelvis, l-rhip, etc))
     
-    if ( abs(sum(forces(analog_footstrike1(s)+1,:,end)))>(Bodymass*0.1) & abs(sum(forces(analog_footoff(s),:,end)))>(Bodymass*0.1) ) | ...
-            ( abs(sum(forces(analog_footstrike1(s)+1,:,end-1)))>(Bodymass*0.1) & abs(sum(forces(analog_footoff(s),:,end-1)))>(Bodymass*0.1) )
+    if ( abs(sum(forces(analog_footstrike1(s)+50,:,end)))>(Bodymass*0.05) & abs(sum(forces(analog_footoff(s)-50,:,end)))>(Bodymass*0.05) ) | ...
+            ( abs(sum(forces(analog_footstrike1(s)+50,:,end-1)))>(Bodymass*0.05) & abs(sum(forces(analog_footoff(s)-50,:,end-1)))>(Bodymass*0.05) )
         on_platform_footstrike1=footstrike1(s);
         on_platform_footstrike2=footstrike2(s);
         on_platform_footoff=footoff(s);
@@ -367,7 +367,7 @@ for s = 1:nstride
     polord=4;
     frame=19;
     der_ord = 1;
-%     cutoffv=test_sav_golay(frame,polord,der_ord,Frame_rate);
+    %     cutoffv=test_sav_golay(frame,polord,der_ord,Frame_rate);
     vel_CoM = sav_golay(CoM,frame,polord,der_ord,Frame_rate);
     
     
@@ -386,19 +386,24 @@ for s = 1:nstride
     vel_CoM_100(:,2,s)=vel_CoM_100y;
     vel_CoM_100(:,3,s)=vel_CoM_100z;
     
-  
-    nmuscles = size(env,2);
-    nc = length(analog_footstrike1(s):analog_footstrike2(s));
-    t100 = linspace(1,nc,100);
     
-    for m = 1:nmuscles
-        EMG_filt_100(:,m,s)= interp1(1:nc,emgBP(analog_footstrike1(s):analog_footstrike2(s),m),t100,'linear');
-        EMG_env_100(:,m,s)= interp1(1:nc,env(analog_footstrike1(s):analog_footstrike2(s),m),t100,'linear');
+    if ~isnan(env)
+        nmuscles = size(env,2);
+        nc = length(analog_footstrike1(s):analog_footstrike2(s));
+        t100 = linspace(1,nc,100);
         
+        for m = 1:nmuscles
+            EMG_filt_100(:,m,s)= interp1(1:nc,emgBP(analog_footstrike1(s):analog_footstrike2(s),m),t100,'linear');
+            EMG_env_100(:,m,s)= interp1(1:nc,env(analog_footstrike1(s):analog_footstrike2(s),m),t100,'linear');
+            
+        end
+        avgenv = nanmean(EMG_env_100(:,:,s),1);
+        EMG_norm_env_100(:,:,s) = EMG_env_100(:,:,s)./avgenv;
+    else
+        EMG_filt_100 = nan;
+        EMG_env_100 =nan;
+        EMG_norm_env_100 = nan;
     end
-    avgenv = nanmean(EMG_env_100(:,:,s),1);
-    EMG_norm_env_100(:,:,s) = EMG_env_100(:,:,s)./avgenv;
-    
     
 end
 
@@ -415,8 +420,12 @@ Data.footprogress = footprogress;
 Data100.Angles_ll_100 = Angles_ll_100;
 Data100.CoM_100 = CoM_100;
 Data100.vel_CoM_100 = vel_CoM_100;
-Data100.Powers_100 = Powers_100;
-Data100.Moments_100 = Moments_100;
+try
+    Data100.Powers_100 = Powers_100;
+    Data100.Moments_100 = Moments_100;
+catch
+    keyboard
+end
 Data100.EMG_filt_100 = EMG_filt_100;
 Data100.EMG_env_100 = EMG_env_100;
 Data100.EMG_norm_env_100 = EMG_norm_env_100;
