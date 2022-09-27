@@ -4,9 +4,7 @@ function [output_res] = get_res(dataL,dataR)
 
 joints = {'Head','Neck','Shoulder','Wrist','Thorax','Pelvis'};
 particular_joints = {'Elbow','footprogress','Hip','Knee','Ankle'};
-
-planes = {'Tilt','Obl','Rot'};
-
+planes={'Tilt','Obl','Rot'}
 indicators = {'Mean','Range','IC'};
 
 %initialize vectors

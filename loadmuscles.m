@@ -10,9 +10,9 @@ Emg_label_left={'voltage.lrectus','voltage.lvastuslat','voltage.lmgluteus','volt
 Emg_label_right2={'rrectus','rvastuslat','rmgluteus','rmedialham','rbiceps','rtibialeant','rsoleus','rmgastrocnemius'};
 Emg_label_left2={'lrectus','lvastuslat','lmgluteus','lmedialham','lbiceps','ltibialeant','lsoleus','lmgastrocnemius'};
 
-labels=c3d.c3dpar.analog.labels; %  labels in c3d
-index1 = find(contains(labels,'voltage.r')); 
-index2=find(contains(labels,'voltage.l'));
+% labels=c3d.c3dpar.analog.labels; %  labels in c3d
+% index1 = find(contains(labels,'voltage.r')); 
+% index2=find(contains(labels,'voltage.l'));
 
 
 
@@ -38,10 +38,13 @@ index2=find(contains(labels,'voltage.l'));
 %     end
 %     labels_l = labels_l(2:end);
 % end
-
+try
 muscle_right=c3dget(c3d,Emg_label_right); 
 muscle_left=c3dget(c3d,Emg_label_left);
-
+catch
+muscle_right=[];
+muscle_left=[];
+end
 if isempty(muscle_right)
     muscle_right=c3dget(c3d,Emg_label_right2); 
     keyboard
@@ -52,13 +55,13 @@ if isempty(muscle_left)
 end
 
 % Frame rate analog and point
-Frame_rate_point=c3d.c3dpar.point.rate;
+% Frame_rate_point=c3d.c3dpar.point.rate;
 Frame_rate_analog=c3d.c3dpar.analog.rate;
 
 
 
 %% Filtro il segnale e ne estraggo l'inviluppo
-if ~isempty(muscle_right) & ~isempty(muscle_left)
+if ~isempty(muscle_right) && ~isempty(muscle_left)
    
 [prematfilec3d]=emgroutine(muscle_right,muscle_left,Frame_rate_analog);
 
