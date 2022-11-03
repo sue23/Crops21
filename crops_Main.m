@@ -13,7 +13,7 @@ addpath(['c3dimport',filesep])
 % Moment_100 = ones(100,3,6).*nan;
 % Power_100 = ones(100,3,6).*nan;
 % TotPower_100 = ones(100,3,1).*nan;
-
+bodymassLabel=true;
 
 prompt = 'number of subjs: ';
 nsubj = input(prompt,'s');
@@ -80,7 +80,7 @@ for subj = 1:nsubj
     DataDoris = cell(1,nc3d);
     ind = 1:2:nc3d*2;
     keyboard
-    for j=1:nc3d
+    for j=5%1:nc3d
        
         FileName = [c3dPaths{j},filesep,c3dNames{j}];
         if isempty(FileName)
@@ -101,11 +101,14 @@ for subj = 1:nsubj
             Subject_Name =char(Subjects_Names);
             Doriscenter =[];
         end
+        if bodymassLabel
         if isfield(c3d.c3dpar,'processing')
             acqpar.Bodymass=c3d.c3dpar.processing.bodymass;
         else
-            %             sub = input('please insert bodymass ','s');
-            acqpar.Bodymass = 52;%str2double(sub);
+            sub = input('please insert bodymass ','s');
+            acqpar.Bodymass = str2double(sub);
+            bodymassLabel=false;
+        end
         end
         events=c3devents(c3d,'abs'); %events are expressed in absolute frame and time
 
@@ -118,6 +121,7 @@ for subj = 1:nsubj
                 end
                 TRJ2=c3dget(c3d,Subject_Name,TRJ2_label);%trajectory
             end
+            keyboard
             [ events]=extrapolate_events(events,TRJ2);
         end
 
@@ -251,11 +255,11 @@ for subj = 1:nsubj
            keyboard
        end
        DataDoris{j} = PlatformDorisTrial;
-   
+   keyboard
        save([c3dNames{j}(1:end-4), '.mat'],'output_c3dres','left_series','right_series','param_st','digital','PlatformDorisTrial');  
        clear output_c3dres left_series right_series param_st markers_hands markers_head markers_feet 
     end
-    keyboard
+
 %    [output_res] = get_res(Data_left,Data_right);
    
 %     if exist('FZ','var')==1;Data.FZ =FZ; Data.FX = FX; Data.FY = FY;end %TO DO
