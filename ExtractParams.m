@@ -32,7 +32,7 @@ nstride = size(footoff,1);
 for s = 1:nstride
     %normalize at gait cycle
     nc = length(footstrike1(s):footstrike2(s));
-    t100 = linspace(0,nc,100);
+    t100 = linspace(1,nc,100);
     if ~isempty(Doriscenter)
         Doriscenter_100x= [];
         Doriscenter_100y= [];
@@ -53,6 +53,7 @@ for s = 1:nstride
         feet_100x= [];
         feet_100y= [];
         feet_100z= [];
+
 
         Doriscenter_100x= [Doriscenter_100x interp1(1:nc,Doriscenter(footstrike1(s):footstrike2(s),1),t100,'linear')'];
         Doriscenter_100y= [Doriscenter_100y interp1(1:nc,Doriscenter(footstrike1(s):footstrike2(s),2),t100,'linear')'];
@@ -160,7 +161,7 @@ for s = 1:nstride
 
     nc = length(footstrike1(s):footstrike2(s));
     oldtime =1:nc;
-    newtime = linspace(0,nc,100);
+    newtime = linspace(1,nc,100);
 
     Angles_ll_100x= [];
     Angles_ll_100y= [];
