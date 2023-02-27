@@ -6,7 +6,7 @@ joints = {'Head','Neck','Shoulder','Wrist','Thorax','Pelvis'};
 particular_joints = {'Elbow','footprogress','Hip','Knee','Ankle'};
 planes={'Tilt','Obl','Rot'}
 indicators = {'Mean','Range','IC'};
-keyboard
+
 %initialize vectors
 for j=1:length(joints)
     for p=1:length(planes)
@@ -22,14 +22,15 @@ end
 for j=1:length(joints)
     for p=1:length(planes)
         for i=1:length(indicators)
-            for d=1:length(dataL)
-                eval(['loutput_res.',joints{j},'.',planes{p},'.',indicators{i},'=[','loutput_res.',joints{j},'.',planes{p},'.',indicators{i},...
-                    ',','dataL{',num2str(d),'}.',joints{j},'.',indicators{i},'(',num2str(p),',:)];'])
+            if isfield(dataL,joints{j})
+            eval(['loutput_res.',joints{j},'.',planes{p},'.',indicators{i},'=[','loutput_res.',joints{j},'.',planes{p},'.',indicators{i},...
+                ',','dataL','.',joints{j},'.',indicators{i},'(',num2str(p),',:)];'])
             end
-            
-            for d=1:length(dataR)
-                eval(['routput_res.',joints{j},'.',planes{p},'.',indicators{i},'=[','routput_res.',joints{j},'.',planes{p},'.',indicators{i},...
-                    ',','dataR{',num2str(d),'}.',joints{j},'.',indicators{i},'(',num2str(p),',:)];'])
+
+
+            if isfield(dataR,joints{j})
+            eval(['routput_res.',joints{j},'.',planes{p},'.',indicators{i},'=[','routput_res.',joints{j},'.',planes{p},'.',indicators{i},...
+                ',','dataR','.',joints{j},'.',indicators{i},'(',num2str(p),',:)];'])
             end
         end
     end
@@ -41,7 +42,7 @@ for j=1:length(joints)
         for i=1:length(indicators)
             eval(['output_res.',joints{j},'.',planes{p},'.',indicators{i},'=[',...
                 'loutput_res.',joints{j},'.',planes{p},'.',indicators{i},''',','routput_res.',joints{j},'.',planes{p},'.',indicators{i},'''' ,'];'])
-            
+
         end
     end
 end
@@ -59,14 +60,14 @@ end
 
 for p=1
     for i=1:length(indicators)
-        for d=1:length(dataL)
-            eval(['loutput_res.Elbow.',planes{p},'.',indicators{i},'=[','loutput_res.Elbow.',planes{p},'.',indicators{i},...
-                ',','dataL{',num2str(d),'}.Elbow.',indicators{i},'(',num2str(p),',:)];'])
+        if isfield(dataL,'Elbow')
+        eval(['loutput_res.Elbow.',planes{p},'.',indicators{i},'=[','loutput_res.Elbow.',planes{p},'.',indicators{i},...
+            ',','dataL','.Elbow.',indicators{i},'(',num2str(p),',:)];'])
+
         end
-        
-        for d=1:length(dataR)
-            eval(['routput_res.Elbow.',planes{p},'.',indicators{i},'=[','routput_res.Elbow.',planes{p},'.',indicators{i},...
-                ',','dataR{',num2str(d),'}.Elbow.',indicators{i},'(',num2str(p),',:)];'])
+        if isfield(dataR,'Elbow')
+        eval(['routput_res.Elbow.',planes{p},'.',indicators{i},'=[','routput_res.Elbow.',planes{p},'.',indicators{i},...
+            ',','dataR','.Elbow.',indicators{i},'(',num2str(p),',:)];'])
         end
     end
 end
@@ -75,7 +76,7 @@ for p=1
     for i=1:length(indicators)
         eval(['output_res.Elbow.',planes{p},'.',indicators{i},'=[',...
             'loutput_res.Elbow.',planes{p},'.',indicators{i},''',','routput_res.Elbow.',planes{p},'.',indicators{i},'''' ,'];'])
-        
+
     end
 end
 
@@ -90,15 +91,15 @@ end
 
 for p=3
     for i=1:length(indicators)
-        for d=1:length(dataL)
-            eval(['loutput_res.footprogress.',planes{p},'.',indicators{i},'=[','loutput_res.footprogress.',planes{p},'.',indicators{i},...
-                ',','dataL{',num2str(d),'}.footprogress.',indicators{i},'(',num2str(1),',:)];'])
-        end
-        
-        for d=1:length(dataR)
-            eval(['routput_res.footprogress.',planes{p},'.',indicators{i},'=[','routput_res.footprogress.',planes{p},'.',indicators{i},...
-                ',','dataR{',num2str(d),'}.footprogress.',indicators{i},'(',num2str(1),',:)];'])
-        end
+
+        eval(['loutput_res.footprogress.',planes{p},'.',indicators{i},'=[','loutput_res.footprogress.',planes{p},'.',indicators{i},...
+            ',','dataL','.footprogress.',indicators{i},'(',num2str(1),',:)];'])
+
+
+
+        eval(['routput_res.footprogress.',planes{p},'.',indicators{i},'=[','routput_res.footprogress.',planes{p},'.',indicators{i},...
+            ',','dataR','.footprogress.',indicators{i},'(',num2str(1),',:)];'])
+
     end
 end
 
@@ -106,7 +107,7 @@ for p=3
     for i=1:length(indicators)
         eval(['output_res.footprogress.',planes{p},'.',indicators{i},'=[',...
             'loutput_res.footprogress.',planes{p},'.',indicators{i},''',','routput_res.footprogress.',planes{p},'.',indicators{i},'''' ,'];'])
-        
+
     end
 end
 
@@ -129,25 +130,27 @@ end
 
 for p=1:2
     for i=1:length(indicators)
-        for d=1:length(dataL)
+
+        if isfield(dataL.Hip,indicators{i})
             if i<4
                 eval(['loutput_res.Hip.',planes{p},'.',indicators{i},'=[','loutput_res.Hip.',planes{p},'.',indicators{i},...
-                    ',','dataL{',num2str(d),'}.Hip.',indicators{i},'(',num2str(p),',:)];'])
+                    ',','dataL','.Hip.',indicators{i},'(',num2str(p),',:)];'])
             end
             if i>3 & p==1
                 eval(['loutput_res.Hip.',planes{p},'.',indicators{i},'=[','loutput_res.Hip.',planes{p},'.',indicators{i},...
-                    ',','dataL{',num2str(d),'}.Hip.',indicators{i},'(',num2str(1),',:)];'])
+                    ',','dataL','.Hip.',indicators{i},'(',num2str(1),',:)];'])
             end
+
         end
-        
-        for d=1:length(dataR)
+
+        if isfield(dataR.Hip,indicators{i})
             if i<4
                 eval(['routput_res.Hip.',planes{p},'.',indicators{i},'=[','routput_res.Hip.',planes{p},'.',indicators{i},...
-                    ',','dataR{',num2str(d),'}.Hip.',indicators{i},'(',num2str(p),',:)];'])
+                    ',','dataR','.Hip.',indicators{i},'(',num2str(p),',:)];'])
             end
             if i>3 & p==1
                 eval(['routput_res.Hip.',planes{p},'.',indicators{i},'=[','routput_res.Hip.',planes{p},'.',indicators{i},...
-                    ',','dataR{',num2str(d),'}.Hip.',indicators{i},'(',num2str(1),',:)];'])
+                    ',','dataR','.Hip.',indicators{i},'(',num2str(1),',:)];'])
             end
         end
     end
@@ -181,14 +184,15 @@ end
 
 for p=1
     for i=1:length(indicators)
-        for d=1:length(dataL)
+        if isfield(dataL.Knee,indicators{i})
             eval(['loutput_res.Knee.',planes{p},'.',indicators{i},'=[','loutput_res.Knee.',planes{p},'.',indicators{i},...
-                ',','dataL{',num2str(d),'}.Knee.',indicators{i},'(',num2str(p),',:)];'])
+                ',','dataL','.Knee.',indicators{i},'(',num2str(p),',:)];'])
+
         end
-        
-        for d=1:length(dataR)
+        if isfield(dataR.Knee,indicators{i})
+
             eval(['routput_res.Knee.',planes{p},'.',indicators{i},'=[','routput_res.Knee.',planes{p},'.',indicators{i},...
-                ',','dataR{',num2str(d),'}.Knee.',indicators{i},'(',num2str(p),',:)];'])
+                ',','dataR','.Knee.',indicators{i},'(',num2str(p),',:)];'])
         end
     end
 end
@@ -197,7 +201,7 @@ for p=1
     for i=1:length(indicators)
         eval(['output_res.Knee.',planes{p},'.',indicators{i},'=[',...
             'loutput_res.Knee.',planes{p},'.',indicators{i},''',','routput_res.Knee.',planes{p},'.',indicators{i},'''' ,'];'])
-        
+
     end
 end
 
@@ -216,14 +220,13 @@ end
 
 for p=1
     for i=1:length(indicators)
-        for d=1:length(dataL)
+        if isfield(dataL.Ankle,indicators{i})
             eval(['loutput_res.Ankle.',planes{p},'.',indicators{i},'=[','loutput_res.Ankle.',planes{p},'.',indicators{i},...
-                ',','dataL{',num2str(d),'}.Ankle.',indicators{i},'(',num2str(p),',:)];'])
+                ',','dataL','.Ankle.',indicators{i},'(',num2str(p),',:)];'])
         end
-        
-        for d=1:length(dataR)
+        if isfield(dataR.Ankle,indicators{i})
             eval(['routput_res.Ankle.',planes{p},'.',indicators{i},'=[','routput_res.Ankle.',planes{p},'.',indicators{i},...
-                ',','dataR{',num2str(d),'}.Ankle.',indicators{i},'(',num2str(p),',:)];'])
+                ',','dataR','.Ankle.',indicators{i},'(',num2str(p),',:)];'])
         end
     end
 end
@@ -232,7 +235,7 @@ for p=1
     for i=1:length(indicators)
         eval(['output_res.Ankle.',planes{p},'.',indicators{i},'=[',...
             'loutput_res.Ankle.',planes{p},'.',indicators{i},''',','routput_res.Ankle.',planes{p},'.',indicators{i},'''' ,'];'])
-        
+
     end
 end
 

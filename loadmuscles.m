@@ -47,11 +47,11 @@ muscle_left=[];
 end
 if isempty(muscle_right)
     muscle_right=c3dget(c3d,Emg_label_right2); 
-    keyboard
+
 end
 if isempty(muscle_left)
     muscle_left=c3dget(c3d,Emg_label_left2);
-    keyboard
+
 end
 
 % Frame rate analog and point
